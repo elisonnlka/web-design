@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа: Селекторы CSS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1 class="main-title">Красный</h1>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="#" class="link">Зеленый</a></li>
+                <li><a href="#" class="link special-link">Синий</a></li>
+                <li><a href="#" class="link special-yellow">Желтый</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="content">
+        <article class="post" id="first-post">
+            <h2>Пост 1: Оранжевый</h2>
+            <p>Этот блок текста должен стать оранжевым.</p>
+        </article>
+
+        <article class="post" id="second-post">
+            <h2>Пост 2: Фиолетовый</h2>
+            <p>Этот блок текста должен стать фиолетовым.</p>
+        </article>
+    </section>
+    <section class="sidebar">
+        <div class="widget">
+            <h3>Розовый</h3>
+            <ul class="color-list">
+                <li>Цвет: Серый</li>
+                <li>Цвет: Коричневый</li>
+                <li class="highlighted">Цвет: Черный</li>
+            </ul>
+        </div>
+        <div class="widget important-widget">
+            <h3>Бордовый</h3>
+            <p class="note">Этот текст должен стать бордовым.</p>
+        </div>
+    </section>
+    <footer>
+        <form action="#" class="form">
+            <label for="name">Введите имя:</label>
+            <input type="text" id="name" placeholder="Белый">
+            <button type="submit" class="submit-btn">Черный</button>
+        </form>
+    </footer>
+</body>
+
+</html>
