@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Positioning Task</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            font-weight: bold;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .box-static {
+            background-color: lightblue;
+            margin-bottom: 10px;
+        }
+
+        .box-relative-1 {
+            position: relative;
+            background-color: lightgreen;
+            left: 50px;
+            z-index: 1;
+        }
+
+        .box-relative-2 {
+            flex-wrap: wrap-reverse;
+            position: relative;
+            background-color: pink;
+            top: -50px;
+            left: 80px;
+            z-index: 2;
+        }
+
+        .container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            background-color: #ddd;
+            margin-top: 2px;
+        }
+
+        .box-absolute-1 {
+            position: absolute;
+            background-color: rgb(255, 119, 0);
+            width: 120px;
+            height: 120px;
+            top: 20px;
+            left: 20px;
+            z-index: 3;
+        }
+
+        .box-absolute-2 {
+            position: absolute;
+            background-color: #87CEEB;
+            width: 140px;
+            height: 140px;
+            top: 50px;
+            left: 50px;
+            z-index: 2;
+        }
+
+        .box-absolute-3 {
+            position: absolute;
+            background-color: purple;
+            width: 160px;
+            height: 160px;
+            top: 80px;
+            left: 80px;
+            z-index: 1;
+        }
+
+        .box-zindex-1 {
+            position: relative;
+            background-color: lightcoral;
+            width: 210px;
+            height: 210px;
+            top: -780px;
+            left: 1175px;
+            z-index: 5;
+        }
+
+        .box-zindex-2 {
+            position: relative;
+            background-color: teal;
+            width: 210px;
+            height: 210px;
+            top: -880px;
+            left: 1225px;
+            z-index: 4;
+        }
+
+        .box-fixed-1 {
+            position: fixed;
+            background-color: yellow;
+            color: black;
+            top: 0;
+            right: 0;
+            z-index: 3;
+        }
+
+        .box-fixed-2 {
+            position: fixed;
+            background-color: darkorange;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Static positioned boxes -->
+    <div class="box-static">Static</div>
+    <div class="box-static">Static</div>
+    <!-- Relative positioned boxes -->
+    <div class="box-relative-1">Relative 1</div>
+    <div class="box-relative-2">Relative 2</div>
+    <!-- Container with absolute positioned boxes inside -->
+    <div class="container">
+        <div class="box-absolute-1">Absolute 1</div>
+        <div class="box-absolute-2">Absolute 2</div>
+        <div class="box-absolute-3">Absolute 3</div>
+    </div>
+    <!-- Overlapping boxes with z-index outside container -->
+    <div class="box-zindex-1">Z-Index 5</div>
+    <div class="box-zindex-2">Z-Index 4</div>
+    <!-- Fixed positioned boxes -->
+    <div class="box-fixed-1">Fixed Top-Right</div>
+    <div class="box-fixed-2">Fixed Bottom-Left</div>
+</body>
+
+</html>
