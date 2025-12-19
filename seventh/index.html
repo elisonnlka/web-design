@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Функции - Задачи</title>
+</head>
+
+<body>
+    <h1>6 JavaScript функций</h1>
+
+    <h2>Функции:</h2>
+    <ol>
+        <li>percentage(total, percent) - вычисляет проценты</li>
+        <li>contains(str, subStr) - проверяет наличие подстроки</li>
+        <li>toggle(value) - возвращает обратное булево значение</li>
+        <li>getKeys(obj) - возвращает ключи объекта через запятую</li>
+        <li>getLength(array) - возвращает количество элементов в массиве</li>
+        <li>logElements(array) - выводит каждый элемент массива в консоль</li>
+    </ol>
+
+    <h2>Результаты в консоли (F12 чтобы открыть):</h2>
+
+    <script>
+        // 1. Функция для вычисления процентов
+        function percentage(total, percent) {
+            return (total * percent) / 100;
+        }
+
+        // 2. Функция для проверки наличия подстроки
+        function contains(str, subStr) {
+            return str.includes(subStr);
+        }
+
+        // 3. Функция для получения обратного булевого значения
+        function toggle(value) {
+            return !value;
+        }
+
+        // 4. Функция для получения ключей объекта
+        function getKeys(obj) {
+            return Object.keys(obj).join(', ');
+        }
+
+        // 5. Функция для получения длины массива
+        function getLength(array) {
+            return array.length;
+        }
+
+        // 6. Функция для вывода элементов массива в консоль
+        function logElements(array) {
+            array.forEach((element, index) => {
+                console.log(`Элемент [${index}]: ${element}`);
+            });
+        }
+
+        console.log('Тест функций\n');
+
+        console.log('1. percentage(200, 25):');
+        console.log(`   Результат: ${percentage(200, 25)} (25% от 200 = 50)`);
+        console.log(`   percentage(1000, 15): ${percentage(1000, 15)}`);
+        console.log();
+
+        console.log('2. contains("Hello World", "World"):');
+        console.log(`   Результат: ${contains("Hello World", "World")}`);
+        console.log(`   contains("JavaScript", "Python"): ${contains("JavaScript", "Python")}`);
+        console.log();
+
+        console.log('3. toggle(true):');
+        console.log(`   Результат: ${toggle(true)}`);
+        console.log(`   toggle(false): ${toggle(false)}`);
+        console.log();
+
+        const testObj = {
+            name: "Иван",
+            age: 30,
+            city: "Москва",
+            profession: "Разработчик"
+        };
+        console.log('4. getKeys({name: "Иван", age: 30, city: "Москва"}):');
+        console.log(`   Результат: "${getKeys(testObj)}"`);
+        console.log();
+
+        const testArray = [10, 20, 30, 40, 50, 60];
+        console.log('5. getLength([10, 20, 30, 40, 50, 60]):');
+        console.log(`   Результат: ${getLength(testArray)}`);
+        console.log(`   getLength([]): ${getLength([])}`);
+        console.log();
+
+        console.log('6. logElements(["Яблоко", "Банан", "Апельсин"]):');
+        console.log('   Вывод в консоль:');
+        logElements(["Яблоко", "Банан", "Апельсин"]);
+    </script>
+</body>
+
+</html>

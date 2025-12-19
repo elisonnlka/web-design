@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сложный пример CSS Grid</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .grid-container {
+            display: grid;
+            width: 90%;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 10px;
+            max-width: 1200px;
+            grid-template-areas:
+                "wid wid wid vovsy vovsy vovsy ."
+                "bot bot bot bot bot bot ."
+                "big big . . . . ."
+                ". . . . . . footer";
+        }
+
+        .grid-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 20px;
+            height: 70px;
+        }
+
+        .item4 {
+            background-color: #4D96FF;
+            grid-area: footer;
+        }
+
+        .item5 {
+            background-color: #FFB6B9;
+            grid-area: big;
+            height: 210px;
+        }
+
+        .item6 {
+            background-color: #A1E8AF;
+            grid-area: wid;
+        }
+
+        .item7 {
+            background-color: #FFE156;
+            grid-area: vovsy;
+        }
+
+        .item8 {
+            background-color: #FF9F1C;
+            grid-area: bot;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-container">
+        <div class="grid-item item6">Широкий блок</div>
+        <div class="grid-item item7">Во всю ширину</div>
+        <div class="grid-item item8">Нижний блок</div>
+        <div class="grid-item item5">Большой блок</div>
+        <div class="grid-item item4">Футер</div>
+    </div>
+</body>
+
+</html>

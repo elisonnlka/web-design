@@ -1,0 +1,175 @@
+/* Стили для секции технологий */
+.tech-section {
+    padding: 100px 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #0c1a2b, #1a2d3e);
+    position: relative;
+}
+
+.tech-section .container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.tech-section .section-header {
+    text-align: center;
+    margin-bottom: 70px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tech-section .pre-title {
+    font-size: 1rem;
+    color: #4a90e2;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.tech-section .main-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 25px;
+    color: #ffffff;
+}
+
+.tech-section .section-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #b8d0f0;
+    padding: 0 20px;
+}
+
+/* Сетка технологий */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+    margin-bottom: 60px;
+}
+
+.tech-card {
+    background: rgba(26, 40, 58, 0.8);
+    border-radius: 20px;
+    padding: 35px 30px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(74, 144, 226, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.tech-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(74, 144, 226, 0.3);
+    background: rgba(30, 46, 68, 0.9);
+}
+
+.tech-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.2), rgba(74, 144, 226, 0.1));
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    font-size: 2rem;
+    color: #4a90e2;
+    border: 1px solid rgba(74, 144, 226, 0.3);
+}
+
+.tech-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.tech-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #a8c6f0;
+}
+
+/* Кнопки в секции технологий */
+.tech-section .buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Адаптивность для сетки */
+@media (max-width: 1024px) {
+    .tech-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+
+    .tech-section .main-title {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .tech-section {
+        padding: 70px 20px;
+    }
+
+    .tech-grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .tech-card {
+        padding: 30px 25px;
+    }
+
+    .tech-section .main-title {
+        font-size: 2.2rem;
+    }
+
+    .tech-section .buttons-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tech-section .buttons-container a {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .tech-section {
+        padding: 50px 15px;
+    }
+
+    .tech-section .main-title {
+        font-size: 2rem;
+    }
+
+    .tech-section .section-description {
+        font-size: 1rem;
+        padding: 0;
+    }
+
+    .tech-card {
+        padding: 25px 20px;
+    }
+}
