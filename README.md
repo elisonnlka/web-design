@@ -11,4 +11,9 @@ web-design
  - [x] [Визитка](https://elisonnlka.github.io/web-design/third/second/)
 4. 5 лабораторная работа
  - [x] [1 задание](https://elisonnlka.github.io/web-design/forth/first/)
- - [x] [Визитка+достижения](https://elisonnlka.github.io/web-design/forth/second/) 
+ - [x] [Визитка+достижения](https://elisonnlka.github.io/web-design/forth/second/)
+5. 6 лабораторная работа
+ - [x] [1 задание](https://elisonnlka.github.io/web-design/sixth/first/)
+ - [x] [Визитка+достижения+технологии](https://elisonnlka.github.io/web-design/sixth/second/) 
+6. 7 лабораторная работа
+ - [x] [Задание](https://elisonnlka.github.io/web-design/seventh/)
