@@ -47,7 +47,6 @@
     padding: 0 20px;
 }
 
-/* Сетка технологий */
 .tech-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -103,7 +102,6 @@
     color: #a8c6f0;
 }
 
-/* Кнопки в секции технологий */
 .tech-section .buttons-container {
     display: flex;
     justify-content: center;
@@ -111,7 +109,6 @@
     flex-wrap: wrap;
 }
 
-/* Адаптивность для сетки */
 @media (max-width: 1024px) {
     .tech-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -172,4 +169,5 @@
     .tech-card {
         padding: 25px 20px;
     }
+
 }
