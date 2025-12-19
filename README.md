@@ -17,3 +17,5 @@ web-design
  - [x] [Визитка+достижения+технологии](https://elisonnlka.github.io/web-design/sixth/second/) 
 6. 7 лабораторная работа
  - [x] [Задание](https://elisonnlka.github.io/web-design/seventh/)
+7. 8 лабораторная работа
+ - [x] [туду](https://elisonnlka.github.io/web-design/eighth/)
