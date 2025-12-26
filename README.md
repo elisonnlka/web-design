@@ -18,4 +18,8 @@ web-design
 6. 7 лабораторная работа
  - [x] [Задание](https://elisonnlka.github.io/web-design/seventh/)
 7. 8 лабораторная работа
- - [x] [туду](https://elisonnlka.github.io/web-design/eighth/)
+ - [x] [туду](https://elisonnlka.github.io/web-design/eighth/)  
+8. 9 лабораторная работа
+ - [x] [Асинхронный JS](https://elisonnlka.github.io/web-design/nineth/)
+9. 10 лабораторная работа
+ - [x] [JQuery](https://elisonnlka.github.io/web-design/tenth)  
