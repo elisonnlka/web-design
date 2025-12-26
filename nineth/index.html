@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Асинхронные операции в JavaScript</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #edf2f7;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: #667eea;
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .task-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .task-item.success {
+            border-left-color: #48bb78;
+            background: linear-gradient(90deg, rgba(72, 187, 120, 0.1), transparent);
+        }
+
+        .task-item.pending {
+            border-left-color: #ed8936;
+            background: linear-gradient(90deg, rgba(237, 137, 54, 0.1), transparent);
+        }
+
+        .task-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .task-status {
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .post-item {
+            padding: 18px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .post-item:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        .post-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .post-id {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 10px;
+        }
+
+        th {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        tr:last-child td:first-child {
+            border-radius: 0 0 0 10px;
+        }
+
+        tr:last-child td:last-child {
+            border-radius: 0 0 10px 0;
+        }
+
+        .currency-code {
+            display: inline-block;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .rate-value {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #718096;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error {
+            background: linear-gradient(90deg, #fc8181, #f56565);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .error i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid #edf2f7;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: currentColor;
+            mask-size: contain;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            vertical-align: middle;
+        }
+
+        .icon-tasks {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-3.7 13.3l-2.6-2.6 1.4-1.4 1.2 1.2 3.6-3.6 1.4 1.4-5 5z'/%3E%3C/svg%3E");
+        }
+
+        .icon-posts {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z'/%3E%3C/svg%3E");
+        }
+
+        .icon-rates {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h2.08c.1 1.03.82 1.55 2.22 1.55 1.36 0 2.13-.56 2.13-1.5 0-.96-.71-1.3-2.31-1.75-2.1-.53-3.43-1.27-3.43-3.08 0-1.75 1.39-2.96 3.2-3.34V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.57-2.02-1.57-1.21 0-1.94.44-1.94 1.42 0 .87.63 1.19 2.22 1.61 2.31.64 3.42 1.45 3.42 3.29 0 1.86-1.45 3.22-3.38 3.49z'/%3E%3C/svg%3E");
+        }
+
+        .icon-refresh {
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Асинхронный Dashboard</h1>
+            <p class="subtitle">Демонстрация работы с Promise, async/await и Fetch API</p>
+        </header>
+
+        <div class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <span class="icon icon-tasks"></span>
+                        Выполнение задач
+                    </h2>
+                    <span class="badge">async/await</span>
+                </div>
+                <div id="tasksOutput">
+                    <div class="loading" id="tasksLoading">
+                        <div class="loading-spinner"></div>
+                        <p>Выполнение задач...</p>
+                    </div>
+                    <div id="tasksList"></div>
+                </div>
+                <div class="stats" id="tasksStats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="tasksCompleted">0</div>
+                        <div class="stat-label">Выполнено</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="tasksTotal">3</div>
+                        <div class="stat-label">Всего задач</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <span class="icon icon-posts"></span>
+                        Загрузка постов
+                    </h2>
+                    <span class="badge">Fetch API</span>
+                </div>
+                <div id="postsOutput">
+                    <div class="loading" id="postsLoading">
+                        <div class="loading-spinner"></div>
+                        <p>Загрузка постов...</p>
+                    </div>
+                    <div id="postsList"></div>
+                </div>
+                <div class="controls">
+                    <button class="btn" onclick="loadPosts()">
+                        <span class="icon icon-refresh"></span>
+                        Обновить посты
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <span class="icon icon-rates"></span>
+                        Курсы валют НБРБ
+                    </h2>
+                    <span class="badge">REST API</span>
+                </div>
+                <div id="ratesOutput">
+                    <div class="loading" id="ratesLoading">
+                        <div class="loading-spinner"></div>
+                        <p>Загрузка курсов...</p>
+                    </div>
+                    <div id="ratesTable"></div>
+                </div>
+                <div class="controls">
+                    <button class="btn" onclick="loadExchangeRates()">
+                        <span class="icon icon-refresh"></span>
+                        Обновить курсы
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tasksList = document.getElementById('tasksList');
+        const tasksLoading = document.getElementById('tasksLoading');
+        const postsList = document.getElementById('postsList');
+        const postsLoading = document.getElementById('postsLoading');
+        const ratesTable = document.getElementById('ratesTable');
+        const ratesLoading = document.getElementById('ratesLoading');
+        const tasksCompleted = document.getElementById('tasksCompleted');
+
+        async function runTask(taskName, delay, index) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(`${taskName} выполнена за ${delay}ms`);
+                }, delay);
+            });
+        }
+
+        async function runAllTasks() {
+            const tasks = [
+                { name: "Загрузка конфигурации", time: 1000 },
+                { name: "Инициализация модулей", time: 800 },
+                { name: "Проверка зависимостей", time: 600 }
+            ];
+
+            let completedCount = 0;
+
+            for (let i = 0; i < tasks.length; i++) {
+                const task = tasks[i];
+                const taskDiv = document.createElement('div');
+                taskDiv.className = 'task-item pending';
+
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'task-icon';
+                iconDiv.textContent = i + 1;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'task-content';
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'task-name';
+                nameDiv.textContent = task.name;
+
+                const statusDiv = document.createElement('div');
+                statusDiv.className = 'task-status';
+                statusDiv.textContent = 'В процессе...';
+
+                contentDiv.appendChild(nameDiv);
+                contentDiv.appendChild(statusDiv);
+
+                taskDiv.appendChild(iconDiv);
+                taskDiv.appendChild(contentDiv);
+                tasksList.appendChild(taskDiv);
+
+                const result = await runTask(task.name, task.time, i);
+
+                taskDiv.className = 'task-item success';
+                statusDiv.textContent = result;
+                completedCount++;
+                tasksCompleted.textContent = completedCount;
+            }
+
+            tasksLoading.style.display = 'none';
+
+            const doneDiv = document.createElement('div');
+            doneDiv.className = 'task-item success';
+            doneDiv.style.background = 'linear-gradient(90deg, rgba(72, 187, 120, 0.2), transparent)';
+
+            const iconDiv = document.createElement('div');
+            iconDiv.className = 'task-icon';
+            iconDiv.innerHTML = '✓';
+            iconDiv.style.background = '#48bb78';
+            iconDiv.style.color = 'white';
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'task-content';
+
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'task-name';
+            nameDiv.textContent = 'Все задачи завершены!';
+            nameDiv.style.color = '#48bb78';
+
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'task-status';
+            statusDiv.textContent = 'Готово к работе';
+
+            contentDiv.appendChild(nameDiv);
+            contentDiv.appendChild(statusDiv);
+
+            doneDiv.appendChild(iconDiv);
+            doneDiv.appendChild(contentDiv);
+            tasksList.appendChild(doneDiv);
+        }
+
+        async function loadPosts() {
+            postsLoading.style.display = 'block';
+            postsList.innerHTML = '';
+
+            try {
+                const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5');
+                const posts = await response.json();
+
+                posts.forEach(post => {
+                    const postDiv = document.createElement('div');
+                    postDiv.className = 'post-item';
+
+                    const idSpan = document.createElement('span');
+                    idSpan.className = 'post-id';
+                    idSpan.textContent = `ID: ${post.id}`;
+
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'post-title';
+                    titleDiv.textContent = post.title;
+
+                    postDiv.appendChild(idSpan);
+                    postDiv.appendChild(titleDiv);
+                    postsList.appendChild(postDiv);
+                });
+
+                postsLoading.style.display = 'none';
+            } catch (err) {
+                postsLoading.style.display = 'none';
+                postsList.innerHTML = `
+                    <div class="error">
+                        <p>Ошибка загрузки постов</p>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">${err.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadExchangeRates() {
+            ratesLoading.style.display = 'block';
+            ratesTable.innerHTML = '';
+
+            try {
+                const response = await fetch('https://api.nbrb.by/exrates/rates?periodicity=0');
+                const rates = await response.json();
+
+                let tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Валюта</th>
+                                <th>Единиц</th>
+                                <th>Курс BYN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                rates.slice(0, 8).forEach(rate => {
+                    tableHTML += `
+                        <tr>
+                            <td>
+                                <span class="currency-code">${rate.Cur_Abbreviation}</span>
+                                <div style="font-size: 0.85rem; color: #718096; margin-top: 4px;">
+                                    ${rate.Cur_Name}
+                                </div>
+                            </td>
+                            <td>${rate.Cur_Scale}</td>
+                            <td class="rate-value">${rate.Cur_OfficialRate.toFixed(4)}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHTML += `
+                        </tbody>
+                    </table>
+                    <div style="text-align: center; margin-top: 15px; color: #718096; font-size: 0.9rem;">
+                        Показано ${Math.min(rates.length, 8)} из ${rates.length} валют
+                    </div>
+                `;
+
+                ratesTable.innerHTML = tableHTML;
+                ratesLoading.style.display = 'none';
+            } catch (err) {
+                ratesLoading.style.display = 'none';
+                ratesTable.innerHTML = `
+                    <div class="error">
+                        <p>Ошибка загрузки курсов</p>
+                        <p style="font-size: 0.9rem; margin-top: 5px;">${err.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            runAllTasks();
+            loadPosts();
+            loadExchangeRates();
+        });
+    </script>
+</body>
+
+</html>

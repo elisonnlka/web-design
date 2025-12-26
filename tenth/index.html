@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jQuery Практика</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .task-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .task-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .task-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .task-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: #3498db;
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+            flex-shrink: 0;
+        }
+
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .instructions ul {
+            padding-left: 18px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .instructions li {
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .todo-list {
+            list-style: none;
+            margin: 15px 0;
+            flex-grow: 1;
+        }
+
+        .todo-list li {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .todo-list li:hover {
+            background: #e9ecef;
+            transform: translateX(3px);
+        }
+
+        .todo-list li:before {
+            content: "•";
+            color: #3498db;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-width: 160px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #2573a7 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-control.error {
+            border-color: #e74c3c;
+            background-color: #ffeaea;
+        }
+
+        .form-control.success {
+            border-color: #2ecc71;
+            background-color: #eafaf1;
+        }
+
+        .greeting {
+            margin-top: 20px;
+            padding: 18px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            font-weight: 500;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .highlight {
+            background: #f1c40f;
+            color: #2c3e50;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .form-actions {
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>jQuery Практика</h1>
+            <p class="subtitle">Работа с селекторами, манипуляциями и событиями</p>
+        </header>
+
+        <div class="content">
+            <div class="task-card">
+                <div class="task-header">
+                    <h2 class="task-title">
+                        <span class="task-number">1</span>
+                        Список дел
+                    </h2>
+                    <button id="task1Btn" class="btn">
+                        <span>Выполнить задание</span>
+                    </button>
+                </div>
+
+                <div class="instructions">
+                    <h3>Что должно произойти:</h3>
+                    <ul>
+                        <li>Изменится заголовок страницы</li>
+                        <li>Четные элементы станут серыми, нечетные — белыми</li>
+                        <li>Добавится новый пункт "Изучить jQuery"</li>
+                    </ul>
+                </div>
+
+                <ul class="todo-list" id="todoList">
+                    <li>Проснуться</li>
+                    <li>Позавтракать</li>
+                    <li>Почитать новости</li>
+                    <li>Поработать</li>
+                    <li>Пообедать</li>
+                </ul>
+
+                <div id="task1Result" class="result">
+                    Нажмите кнопку для выполнения задания...
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <h2 class="task-title">
+                        <span class="task-number">2</span>
+                        Форма регистрации
+                    </h2>
+                </div>
+
+                <div class="instructions">
+                    <h3>Требования:</h3>
+                    <ul>
+                        <li>При потере фокуса проверяется поле "Имя"</li>
+                        <li>Если имя пустое — красная рамка</li>
+                        <li>При отправке формы выводится приветствие</li>
+                    </ul>
+                </div>
+
+                <form id="registrationForm" class="form-actions">
+                    <div class="form-group">
+                        <label for="name">Имя:</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Введите ваше имя">
+                        <small style="color: #7f8c8d; font-size: 0.85rem; display: block; margin-top: 4px;">
+                            При потере фокуса будет проверка
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Пароль:</label>
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="Введите пароль">
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">
+                        <span>Отправить</span>
+                    </button>
+                </form>
+
+                <div id="greeting" class="greeting"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#task1Btn').click(function () {
+                $('title').text('jQuery - Готово! | Список дел обновлен');
+
+                $('#todoList li:even').css({
+                    'background-color': '#f8f9fa',
+                    'border-color': '#dee2e6',
+                    'color': '#495057'
+                });
+
+                $('#todoList li:odd').css({
+                    'background-color': '#e9ecef',
+                    'border-color': '#ced4da',
+                    'color': '#343a40'
+                });
+
+                $('#todoList').append('<li>Изучить jQuery</li>');
+
+                $('#task1Result').html(
+                    '<span style="color: #27ae60;">✓ Задание выполнено!</span><br>' +
+                    '1. Заголовок страницы изменен<br>' +
+                    '2. Элементы списка окрашены<br>' +
+                    '3. Добавлен новый пункт "Изучить jQuery"'
+                );
+
+                $(this).html('<span>Задание выполнено ✓</span>');
+                $(this).css('background', 'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)');
+                $(this).prop('disabled', true);
+            });
+
+            $('#name').blur(function () {
+                var nameValue = $(this).val().trim();
+
+                if (nameValue === '') {
+                    $(this).addClass('error').removeClass('success');
+                } else {
+                    $(this).addClass('success').removeClass('error');
+                }
+            });
+
+            $('#registrationForm').submit(function (e) {
+                e.preventDefault();
+
+                var name = $('#name').val().trim();
+                var password = $('#password').val();
+
+                if (name === '') {
+                    $('#name').addClass('error');
+                    $('#greeting')
+                        .html('<span style="color: #f8c471;">Пожалуйста, введите имя</span>')
+                        .css('background', 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)')
+                        .fadeIn();
+                    return;
+                }
+
+                if (password === '') {
+                    $('#greeting')
+                        .html('<span style="color: #f8c471;">Пароль не введен</span>')
+                        .css('background', 'linear-gradient(135deg, #f39c12 0%, #d35400 100%)')
+                        .fadeIn();
+                    return;
+                }
+
+                $('#greeting')
+                    .html('Привет, <span class="highlight">' + name + '</span>!')
+                    .css('background', 'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)')
+                    .fadeIn();
+            });
+
+            $('#password').on('input', function () {
+                var password = $(this).val();
+                if (password.length > 0 && password.length < 6) {
+                    $(this).addClass('error').removeClass('success');
+                } else if (password.length >= 6) {
+                    $(this).addClass('success').removeClass('error');
+                } else {
+                    $(this).removeClass('error success');
+                }
+            });
+
+            $('#registrationForm input').each(function () {
+                if ($(this).val().trim() !== '') {
+                    $(this).addClass('success');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
